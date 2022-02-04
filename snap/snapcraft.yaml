@@ -1,0 +1,52 @@
+---
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2021 Canonical Ltd
+
+name: itrue-jellyfin-haproxy
+summary:  "The Reliable, High Performance TCP/HTTP Load Balancer"
+description: |
+  HAProxy is a free, very fast and reliable reverse-proxy offering high
+  availability, load balancing, and proxying for TCP and HTTP-based
+  applications. It is particularly suited for very high traffic web sites and
+  powers a significant portion of the world's most visited ones. Over the years
+  it has become the de-facto standard opensource load balancer, is now shipped
+  with most mainstream Linux distributions, and is often deployed by default in
+  cloud platforms.
+
+  ---
+
+  This is as version of HAProxy with a predefined configuration to act as a
+  reverse proxy for Jellyfin snaps (itrue-jellyfin).
+
+  ---
+
+  This is a community-developed snap and not officially supported or released
+  by Jellyfin or HAProxy.
+
+base: core20
+confinement: strict
+grade: stable
+version: "10.7.7"
+license: GPL-2.0
+architectures:
+  - build-on: arm64
+  - build-on: armhf
+  - build-on: amd64
+
+parts:
+  jellyfin:
+    plugin: nil
+    stage-packages:
+      - haproxy
+    override-build: |
+      snapcraftctl build
+      install -m 0755 -D ${SNAPCRAFT_PROJECT_DIR}/haproxy.sh \
+        ${SNAPCRAFT_PART_INSTALL}/usr/local/bin/haproxy.sh
+
+apps:
+  server:
+    command: usr/local/bin/haproxy.sh
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
