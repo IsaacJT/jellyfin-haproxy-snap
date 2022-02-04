@@ -1,7 +1,0 @@
-#!/bin/sh
-
-CFG_FILE="${SNAP_DATA}/haproxy.cfg"
-
-echo "Generating ${CFG_FILE}..."
-
-touch ${CFG_FILE}

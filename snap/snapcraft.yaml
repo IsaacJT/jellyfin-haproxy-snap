@@ -34,17 +34,20 @@ architectures:
   - build-on: amd64
 
 parts:
-  jellyfin:
+  haproxy:
     plugin: nil
+    stage-snaps:
+      - itrue-jellyfin
     stage-packages:
       - haproxy
+      - ca-certificates
     override-build: |
       snapcraftctl build
       install -m 0755 -D ${SNAPCRAFT_PROJECT_DIR}/haproxy.sh \
         ${SNAPCRAFT_PART_INSTALL}/usr/local/bin/haproxy.sh
 
 apps:
-  server:
+  itrue-jellyfin-haproxy:
     command: usr/local/bin/haproxy.sh
     daemon: simple
     plugs:
