@@ -36,8 +36,6 @@ architectures:
 parts:
   haproxy:
     plugin: nil
-    stage-snaps:
-      - itrue-jellyfin
     stage-packages:
       - haproxy
       - ca-certificates
